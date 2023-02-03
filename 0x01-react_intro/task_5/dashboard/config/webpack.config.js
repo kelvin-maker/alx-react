@@ -1,8 +1,5 @@
-const path = require("path");
-const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCssAssetsWebpackPlugin = require("optimize-css-assets-webpack-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: "development",
@@ -19,16 +16,19 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader"
-        }
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: [ "@babel/preset-env" ]
+            }
+          }
+        ]
       },
+          
       {
         test: /\.css$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader"
-        ]
+        use: ["style-loader", "css-loader"]
       },
       {
         test: /\.(png|jpeg|jpg|gif)$/,
@@ -41,16 +41,11 @@ module.exports = {
       }
     ]
   },
-  devtool: 'inline-source-map',
+  
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
-      template: "./src/index.html"
-    }),
-    new MiniCssExtractPlugin({
-      filename: "[name].css"
-    }),
-    new OptimizeCssAssetsWebpackPlugin({})
+      template: "./dist/index.html"
+    })
   ]
-
 };
+
